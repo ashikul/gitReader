@@ -14,8 +14,19 @@ export class HomePage {
   //   console.log(highlightjs);
   // }
 
+  myString = '<button ion-button secondary menuToggle>Toggle Menu</button>';
+
   constructor(public navCtrl: NavController ) {
     console.log('constructor');
     console.log(Highlightjs);
+
+    //TODO: prolly move this somewhere on INIT
+    Highlightjs.initHighlightingOnLoad();
+
   }
+
+
+
+
+
 }
