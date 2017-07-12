@@ -18,7 +18,7 @@ export class GithubProvider {
     return 'Ashikul';
   }
 
-  getData(): Observable<any> {
+  getData() {
     return this.http.get(this.testUrl)
       .map(this.extractData)
       .catch(this.handleError);

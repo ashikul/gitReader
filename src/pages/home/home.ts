@@ -37,21 +37,32 @@ export class HomePage {
 
     this.name = this.github.getName();
     // this.github.getData().subscribe(response => (this.profile = response));
-    this.github.getData().subscribe(this.handleProjectData); //this works
-    console.log(this.profile);
+    // this.projectFiles = this.github.getData().subscribe(this.handleProjectData);
+    this.projectFiles = this.github.getData().map(data => data.tree); //woot this works
+    // this.github.getData().subscribe(data => this.projectFiles = data.tree);
+    console.log(this.projectFiles);
 
   }
 
   handleProjectData(response: Response) {
     // console.log('handleProjectData');
     // console.log(response);
-    this.profile = response;
+    let files;
+    files = response;
+    // this.profile = response;
     // console.log('this.profile');
     // console.log(this.profile);
-    this.projectFiles = this.profile.tree;
-    console.log('this.projectFiles');
-    console.log(this.projectFiles);
-    return response;
+    // this.projectFiles = this.profile.tree;
+    // console.log('this.projectFiles');
+    // console.log(this.projectFiles);
+    this.projectFiles = files.tree;
+
+
+    console.log(files.tree);
+    return files.tree;
+
+
+
   }
 
 
