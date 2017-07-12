@@ -20,6 +20,7 @@ export class HomePage {
   projectTreeURL = this.projectURL + '/git/trees/master?recursive=1';
   blobURL = this.projectURL + '/git/blobs/';
   profile;
+  projectFiles;
   name = '';
 
   constructor(public http: Http, public github: GithubProvider,) {
@@ -43,17 +44,16 @@ export class HomePage {
   }
 
   handleProjectData(response: Response) {
-    console.log('handleProjectData');
-    console.log(response);
+    // console.log('handleProjectData');
+    // console.log(response);
     this.profile = response;
-    console.log('this.profile');
-    console.log(this.profile);
+    // console.log('this.profile');
+    // console.log(this.profile);
+    this.projectFiles = this.profile.tree;
+    console.log('this.projectFiles');
+    console.log(this.projectFiles);
     return response;
   }
-
-  // loadUser() {
-  //   this.http.get(this.projectTreeURL).subscribe(data => this.profile = data);
-  // }
 
 
 }

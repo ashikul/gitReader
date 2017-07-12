@@ -16,7 +16,14 @@
 
   <!--<button ion-button secondary menuToggle>Toggle Menu</button>-->
   {{name}}
-{{profile}}
 
-  <pre><code  class="html">{{myString}}</code></pre>
+
+
+  <li *ngFor="let file of projectFiles">
+    <!--<span class="badge">{{hero.id}}</span> {{hero.name}}-->
+    {{file}},
+    {{file.path}}
+  </li>
+
+  <!--<pre><code  class="html">{{myString}}</code></pre>-->
 </ion-content>
