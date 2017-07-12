@@ -1,0 +1,67 @@
+import {Injectable} from "@angular/core";
+import {Http, Response} from "@angular/http";
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/operator/map";
+import 'rxjs/add/operator/catch';
+import "rxjs/add/observable/of";
+
+@Injectable()
+export class GithubProvider {
+  baseUrl = 'https://api.github.com/users';
+  reposUrl = 'repos';
+  testUrl = 'https://api.github.com/repos/ashikul/githubskimmer/git/trees/master?recursive=1';
+
+  constructor(private http: Http) {
+  }
+
+  getName() {
+    return 'Ashikul';
+  }
+
+  getData(): Observable<any> {
+    return this.http.get(this.testUrl)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  // mockGetUserInformation(username: string):Observable<User> {
+  //   return Observable.of(USER_LIST.filter(user => user.name === username)[0])
+  // }
+  //
+  //
+  // mockGetRepositoryInformation(username: string): Observable<Repository[]> {
+  //   return Observable.of(REPOSITORY_LIST.filter(repository => repository.owner.name === username));
+  // }
+  //
+  // getUserInformation(username: string): Observable<User> {
+  //   return this.http.get(`${this.baseUrl}/${username}`).map((data: Response) => data.json());
+  // }
+  //
+  // getRepositoryInformation(username: string): Observable<Repository[]> {
+  //   return this.http.get(`${this.baseUrl}/${username}/${this.reposUrl}`).map((data: Response) => data.json() as Repository[]);
+  // }
+
+  private extractData(res: Response) {
+    let body = res.json();
+    // console.log(res);
+    // console.log(body);
+    // return body.data || {}; NOTE: there is no data field...
+    return body || {};
+  }
+
+  private handleError(error: Response | any) {
+    // In a real world app, you might use a remote logging infrastructure
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
+  }
+
+
+}
