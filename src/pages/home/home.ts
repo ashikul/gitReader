@@ -1,8 +1,7 @@
 import {Component} from "@angular/core";
 import Highlightjs from "highlightjs";
 import {Http} from "@angular/http";
-import { GithubProvider } from '../../providers/github';
-import {getResponseURL} from "@angular/http/src/http_utils";
+import {GithubProvider} from "../../providers/github";
 
 @Component({
   selector: 'page-home',
@@ -23,7 +22,7 @@ export class HomePage {
   profile;
   name = '';
 
-  constructor( public http: Http, public github: GithubProvider,) {
+  constructor(public http: Http, public github: GithubProvider,) {
     // console.log('constructor');
     // console.log(Highlightjs);
 
@@ -35,12 +34,21 @@ export class HomePage {
 
     this.name = this.github.getName();
     // this.github.getData().subscribe(response => (this.profile = response));
-    this.github.getData().subscribe( data => this.profile = data ); //this works
+    this.github.getData().subscribe(this.handleProjectData); //this works
     console.log(this.profile);
 
     // console.log(this.profile);
     // this.loadUser();
 
+  }
+
+  handleProjectData(response: Response) {
+    console.log('handleProjectData');
+    console.log(response);
+    this.profile = response;
+    console.log('this.profile');
+    console.log(this.profile);
+    return response;
   }
 
   // loadUser() {
