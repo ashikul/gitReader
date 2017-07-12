@@ -24,10 +24,12 @@ export class HomePage {
   name = '';
 
   constructor(public http: Http, public github: GithubProvider,) {
-    // console.log('constructor');
-    // console.log(Highlightjs);
 
     //TODO: prolly move this somewhere on INIT
+
+  }
+
+  ngOnInit() {
     Highlightjs.initHighlightingOnLoad();
     // console.log(this.projectTreeURL);
     // console.log(this.blobURL);
@@ -37,9 +39,6 @@ export class HomePage {
     // this.github.getData().subscribe(response => (this.profile = response));
     this.github.getData().subscribe(this.handleProjectData); //this works
     console.log(this.profile);
-
-    // console.log(this.profile);
-    // this.loadUser();
 
   }
 

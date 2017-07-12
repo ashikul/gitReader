@@ -17,13 +17,13 @@
   <!--<button ion-button secondary menuToggle>Toggle Menu</button>-->
   {{name}}
 
-
-
-  <li *ngFor="let file of projectFiles">
+  <li *ngFor="let file of projectFiles | async">
     <!--<span class="badge">{{hero.id}}</span> {{hero.name}}-->
     {{file}},
     {{file.path}}
   </li>
+
+  {{projectFiles}}
 
   <!--<pre><code  class="html">{{myString}}</code></pre>-->
 </ion-content>
