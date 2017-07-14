@@ -18,7 +18,6 @@
   {{name}}
   <!--<ul *ngIf="projectFiles && projectFiles.length > 0">-->
     <li *ngFor="let file of projectFiles | async ">
-      {{file}},
       {{file.path}}
     </li>
   <!--</ul>-->
@@ -28,7 +27,7 @@
   <!--</div>-->
 
 
-  {{projectFiles}}
+  <!--{{projectFiles}}-->
 
   <!--<pre><code  class="html">{{myString}}</code></pre>-->
 </ion-content>

@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
+import {Headers, Http, RequestOptions, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/map";
-import 'rxjs/add/operator/catch';
+import "rxjs/add/operator/catch";
 import "rxjs/add/observable/of";
 
 @Injectable()
@@ -10,6 +10,20 @@ export class GithubProvider {
   baseUrl = 'https://api.github.com/users';
   reposUrl = 'repos';
   testUrl = 'https://api.github.com/repos/ashikul/githubskimmer/git/trees/master?recursive=1';
+  rawCodeHeaders = new Headers({
+    'Accept': 'application/vnd.github.v3.raw',
+    'Authorization': 'Basic YXNoaWt1bDpTaGlyemFkMDAx'
+  });
+  getDataHeaders = new Headers({Accept: 'application/json', Authorization: 'Basic YXNoaWt1bDpTaGlyemFkMDAx'});
+
+  getDataOptions: RequestOptions = new RequestOptions({
+    headers: this.getDataHeaders,
+  });
+  getRawCodeOptions: RequestOptions = new RequestOptions({
+    headers: this.rawCodeHeaders,
+  });
+
+
 
   constructor(private http: Http) {
   }
@@ -19,9 +33,57 @@ export class GithubProvider {
   }
 
   getData() {
-    return this.http.get(this.testUrl)
+    return this.http.get(this.testUrl, this.getDataOptions)
       .map(this.extractData)
       .catch(this.handleError);
+  }
+
+  getRawCodeFromBlobUrl(url) {
+    return this.http.get(url, this.getRawCodeOptions)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getRawCodeCached(url): Observable<any> {
+    let cached = sessionStorage.getItem(url);
+
+    if (cached) {
+      console.log('getting cached data');
+      return Observable.of(JSON.parse(cached));
+    } else {
+      console.log('requesting new data');
+      let request= new RequestOptions({
+        headers: new Headers({Accept: 'application/vnd.github.v3.raw', Authorization: 'Basic YXNoaWt1bDpTaGlyemFkMDAx'}),
+        url: url
+      });
+
+      return this.http.get(url, request)
+        .map(resp => {
+          sessionStorage.setItem(url, resp.text());
+          return resp.json();
+        });
+    }
+  }
+
+  getDataCached(url): Observable<any> {
+    let cached = sessionStorage.getItem(url);
+
+    if (cached) {
+      console.log('getting cached data');
+      return Observable.of(JSON.parse(cached));
+    } else {
+      console.log('requesting new data');
+      let request= new RequestOptions({
+        headers: new Headers({Accept: 'application/json', Authorization: 'Basic YXNoaWt1bDpTaGlyemFkMDAx'}),
+        url: url //why do we need this as well???
+      });
+
+      return this.http.get(url, request)
+        .map(resp => {
+          sessionStorage.setItem(url, resp.text());
+          return resp.json();
+        });
+    }
   }
 
   // mockGetUserInformation(username: string):Observable<User> {
