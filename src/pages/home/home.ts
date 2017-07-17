@@ -71,6 +71,9 @@ export class HomePage {
                         this.github.getRawCodeCached(file.url).subscribe(codeString => {
                             rawCodeString = codeString;
 
+                            console.log('rawCodeString');
+                            console.log('rawCodeString');
+                            console.log(rawCodeString);
                             file.code = rawCodeString;
                             projectFileObjects.push(file);
                             // data.code =
