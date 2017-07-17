@@ -58,16 +58,18 @@ export class HomePage {
             //type
             let projectFileObjects = [];
             //
+            // data.tree[2].map(file => { //why doens this work?
             data.tree.forEach(file => {
 
                     let rawCodeString;
+                    // console.log(file);
 
 
                     //TODO: what about no nblobs??
-                    if (file.type === "blob") {
+                    // if (file.type === "blob") {
+                    if (file.type === "blob" && file.path === "lib/xhr.js") { //testing one file
                         this.github.getRawCodeCached(file.url).subscribe(codeString => {
                             rawCodeString = codeString;
-
 
                             file.code = rawCodeString;
                             projectFileObjects.push(file);
@@ -78,6 +80,7 @@ export class HomePage {
                             // projectFileObjects.push(file)
                         });
                     }
+
 
 
                     // console.log(file.path);

@@ -50,6 +50,7 @@ export class GithubProvider {
     if (cached) {
       console.log('getting cached data');
       // console.log(cached);
+      //NOTE: I REMOVED TO JSON
       return Observable.of(cached);
     } else {
       console.log('requesting new data');
@@ -62,8 +63,15 @@ export class GithubProvider {
         .map(resp => {
           // console.log('resp');
           // console.log(resp);
-          sessionStorage.setItem(url, resp.text());
-          return resp.json();
+          // console.log('request');
+          // console.log(resp);
+          //NOTE: remove text
+          let stringResponse = '';
+          stringResponse = resp.text();
+          // console.log('stringReponse');
+          // console.log(stringResponse);
+          sessionStorage.setItem(url, stringResponse);
+          return stringResponse;
         });
     }
   }
