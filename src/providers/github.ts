@@ -49,7 +49,8 @@ export class GithubProvider {
 
     if (cached) {
       console.log('getting cached data');
-      return Observable.of(JSON.parse(cached));
+      // console.log(cached);
+      return Observable.of(cached);
     } else {
       console.log('requesting new data');
       let request= new RequestOptions({
@@ -59,6 +60,8 @@ export class GithubProvider {
 
       return this.http.get(url, request)
         .map(resp => {
+          // console.log('resp');
+          // console.log(resp);
           sessionStorage.setItem(url, resp.text());
           return resp.json();
         });

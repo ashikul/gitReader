@@ -19,6 +19,9 @@
   <!--<ul *ngIf="projectFiles && projectFiles.length > 0">-->
     <li *ngFor="let file of projectFiles | async ">
       {{file.path}}
+      <div>
+        {{file.code}}
+      </div>
     </li>
   <!--</ul>-->
 
