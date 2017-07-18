@@ -8,7 +8,13 @@
 </ion-header>
 
 <ion-content padding>
+  <div>
+
   <h3> Test App</h3>
+    <input type="number" [(ngModel)]="fontSize">
+    <button (click)="changeFontSize()">Change</button>
+
+  </div>
 
   <!--<p>-->
   <!--If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.-->
@@ -24,7 +30,7 @@
       <!--</div>-->
 
       <div>
-        <pre><code>{{file.code}}</code></pre>
+        <pre><code class="sample-code">{{file.code}}</code></pre>
       </div>
     </li>
   <!--</ul>-->
