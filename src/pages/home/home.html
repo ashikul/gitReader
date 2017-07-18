@@ -28,7 +28,9 @@
       <!--</div>-->
 
       <div>
-        <pre><code class="sample-code">{{file.code}}</code></pre>
+        <!--<div [innerHTML]="file.code"></div>-->
+        <pre><code class="code-block {{file.language}}">{{file.code}}</code></pre>
+        <!--<pre><code class="sample-code" id="blah" [innerHTML]="file.code"></code></pre>-->
       </div>
     </li>
   <!--</ul>-->

@@ -16,13 +16,14 @@ export class HomePage {
 
   vm = this;
   myString = '<button ion-button secondary menuToggle>Toggle Menu</button>';
-  projectURL = 'https://api.github.com/repos/ashikul/githubskimmer';
+  projectURL = 'https://api.github.com/repos/creationix/js-github';
   projectTreeURL = this.projectURL + '/git/trees/master?recursive=1';
   blobURL = this.projectURL + '/git/blobs/';
   profile;
   projectFiles;
   name = '';
   fontSize;
+
 
   constructor(public http: Http, public github: GithubProvider,) {
 
@@ -42,7 +43,11 @@ export class HomePage {
 
   // https://raw.githubusercontent.com/ashikul/githubskimmer/master/src/routes.js
   ngOnInit() {
-    Highlightjs.initHighlightingOnLoad();
+
+    // Highlightjs.initHighlightingOnLoad();
+
+    // console.log(Highlightjs);
+    // console.log(Highlightjs.getLanguage('javascript'));
     // console.log(this.projectTreeURL);
     // console.log(this.blobURL);
 
@@ -53,7 +58,9 @@ export class HomePage {
 
 
     //we'll save this in the future
-    this.projectFiles = this.github.getDataCached('https://api.github.com/repos/creationix/js-github/git/trees/master?recursive=1').map(data => {
+    this.projectFiles = this.github.getDataCached(this.projectTreeURL).map(data => {
+
+      // /[a-zA-Z\_][a-zA-Z0-9\_]*/g
 
       //path
       //type
@@ -68,13 +75,22 @@ export class HomePage {
 
           //TODO: what about no nblobs??
           // if (file.type === "blob") {
-          if (file.type === "blob" && file.path === "lib/xhr.js") { //testing one file
+          if (file.type === "blob" && file.path.includes('xhr-node.js')) { //testing one file
             this.github.getRawCodeCached(file.url).subscribe(codeString => {
               rawCodeString = codeString;
 
-              console.log('rawCodeString');
-              console.log('rawCodeString');
-              console.log(rawCodeString);
+              // console.log('rawCodeString');
+              // console.log('rawCodeString');
+              // console.log(rawCodeString);
+
+              //TODO: reference this code block
+              //TODO: parse value...
+              //TODO: file type check..
+              // let test = Highlightjs.highlight('html', rawCodeString);
+              // console.log('test');
+              // console.log(test);
+              // file.code = rawCodeString;
+              file.language = 'javascript';
               file.code = rawCodeString;
               projectFileObjects.push(file);
               // data.code =
@@ -97,22 +113,69 @@ export class HomePage {
 
       // console.log('data');
       // console.log(data);
+      console.log('done');
+
+      console.log('post-processing1');
+
+
+
+      // let codeBlocks1 = document.getElementsByClassName("code-block");
+      // console.log(codeBlocks1.length);
       return projectFileObjects;
+      //TODO: apply post semantic hightlighting
+      //TODO: for each pre code bloock..
+
       //need to return finalized array
       // return projectFileObjects;
+    },
+    {
+      data :console.log('yellah'),
     }); //woot this works
 
 
-    //TODO: not done yet need to get rawCode and fileType
+    console.log('post-processing2');
+    // console.log(document.getElementsByClassName("code-block"));
+    //get the 1 and only code-block, would need to loop also.. verified multiple are picke dup
+    let codeBlocks = document.getElementsByClassName("code-block");
+    console.log(codeBlocks.length);
+    let g:any =  window;
+    g.eel = codeBlocks;
+
+    console.log('highlight..');
+
+    // Highlightjs.highlightBlock(document.getElementsByClassName("code-block")[0]);
+    // g.eel[0].childNodes.forEach(function(e){return console.log(e);}) this isnt working
+
+
+    // console.log(codeBlocks[0].id);
+    // let array = document.getElementsByClassName("code-block")[0].childNodes;
+    // console.log(array.length);
+    // console.log(array);
+
 
     // this.github.getData().subscribe(data => this.projectFiles = data.tree);
-    console.log(this.projectFiles);
+    // console.log(this.projectFiles);
 
   }
 
+  // ngOnChanges(){
+  //   console.log('ngOnChanges');
+  // }
+  //
+  // ngAfterContentChecked(){
+  //   console.log('ngAfterContentChecked');
+  // }
+  // ngAfterViewChecked(){
+  //   console.log('ngAfterViewChecked');
+  // }
+  //
+  // ngDoCheck(){
+  //   console.log('ngDoCheck');
+  // }
+
   changeFontSize() {
     let code;
-    code = document.querySelector('.sample-code');
+    code = document.querySelector('.code-block');
     code.style.fontSize = this.fontSize + 'px';
   }
 
@@ -150,3 +213,4 @@ export class HomePage {
 //TODO: its not wrapping? need line breaks or something
 //TODO: might need to lazy init with hljs.highlightBlock(block)
 //TODO: webworkers
+
