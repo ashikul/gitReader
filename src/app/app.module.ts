@@ -11,6 +11,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 // import Highlightjs from 'highlightjs';
 import { HttpModule } from '@angular/http';
 import { GithubProvider } from '../providers/github';
+import { IonicStorageModule } from '@ionic/storage';
 
 //TODO: githb service
 
@@ -23,7 +24,8 @@ import { GithubProvider } from '../providers/github';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpModule
+    HttpModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

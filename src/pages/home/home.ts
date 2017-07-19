@@ -52,7 +52,9 @@ export class HomePage {
     // console.log(this.blobURL);
 
 
-    this.name = this.github.getName();
+    this.github.getName().then(nameFromStorage => {
+      this.name = nameFromStorage;
+    });
     // this.github.getData().subscribe(response => (this.profile = response));
     // this.projectFiles = this.github.getData().subscribe(this.handleProjectData);
 

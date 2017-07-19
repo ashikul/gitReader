@@ -4,6 +4,8 @@ import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import "rxjs/add/observable/of";
+import {Storage} from "@ionic/storage";
+//TODO: storage service...
 
 @Injectable()
 export class GithubProvider {
@@ -24,12 +26,14 @@ export class GithubProvider {
   });
 
 
-
-  constructor(private http: Http) {
+  constructor(public http: Http, public storage: Storage) {
+    storage.set('name', 'Max');
   }
 
   getName() {
-    return 'Ashikul';
+    return this.storage.get('name').then((val) => {
+      return val;
+    });
   }
 
   getData() {
@@ -45,35 +49,42 @@ export class GithubProvider {
   }
 
   getRawCodeCached(url): Observable<any> {
-    let cached = sessionStorage.getItem(url);
+    return this.storage.get(url).then((val) => {
 
-    if (cached) {
-      console.log('getting cached data');
-      // console.log(cached);
-      //NOTE: I REMOVED TO JSON
-      return Observable.of(cached);
-    } else {
-      console.log('requesting new data');
-      let request= new RequestOptions({
-        headers: new Headers({Accept: 'application/vnd.github.v3.raw', Authorization: 'Basic YXNoaWt1bDpTaGlyemFkMDAx'}),
-        url: url
-      });
+      let cached = val;
 
-      return this.http.get(url, request)
-        .map(resp => {
-          // console.log('resp');
-          // console.log(resp);
-          // console.log('request');
-          // console.log(resp);
-          //NOTE: remove text
-          let stringResponse = '';
-          stringResponse = resp.text();
-          // console.log('stringReponse');
-          // console.log(stringResponse);
-          sessionStorage.setItem(url, stringResponse);
-          return stringResponse;
+      if (cached) {
+        console.log('getting cached data');
+        // console.log(cached);
+        //NOTE: I REMOVED TO JSON
+        return Observable.of(cached);
+      } else {
+        console.log('requesting new data');
+        let request = new RequestOptions({
+          headers: new Headers({
+            Accept: 'application/vnd.github.v3.raw',
+            Authorization: 'Basic YXNoaWt1bDpTaGlyemFkMDAx'
+          }),
+          url: url
         });
-    }
+
+        return this.http.get(url, request)
+          .map(resp => {
+            // console.log('resp');
+            // console.log(resp);
+            // console.log('request');
+            // console.log(resp);
+            //NOTE: remove text
+            let stringResponse = '';
+            stringResponse = resp.text();
+            // console.log('stringReponse');
+            // console.log(stringResponse);
+            // sessionStorage.setItem(url, stringResponse);
+            this.storage.set(url, stringResponse);
+            return stringResponse;
+          })
+      }
+    });
   }
 
   getDataCached(url): Observable<any> {
@@ -84,7 +95,7 @@ export class GithubProvider {
       return Observable.of(JSON.parse(cached));
     } else {
       console.log('requesting new data');
-      let request= new RequestOptions({
+      let request = new RequestOptions({
         headers: new Headers({Accept: 'application/json', Authorization: 'Basic YXNoaWt1bDpTaGlyemFkMDAx'}),
         url: url //why do we need this as well???
       });
