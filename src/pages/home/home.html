@@ -22,7 +22,7 @@
   <!--<button ion-button secondary menuToggle>Toggle Menu</button>-->
   {{name}}
   <!--<ul *ngIf="projectFiles && projectFiles.length > 0">-->
-  <li *ngFor="let file of projectFiles | async ">
+  <li #allTheseThings *ngFor="let file of projectFiles | async ">
     {{file.path}}
     <!--<div>-->
     <!--{{file.code}}-->

@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, ViewChildren} from "@angular/core";
 import Highlightjs from "highlightjs";
 import {Http} from "@angular/http";
 import {GithubProvider} from "../../providers/github";
@@ -81,8 +81,8 @@ export class HomePage {
             if (file.type === "blob" && file.path.includes('xhr-node.js')) { //testing one file
               this.github.getRawCodeCached(file.url).subscribe(codeString => {
                 rawCodeString = codeString;
-                console.log('getRawCodeCached RESPONSE');
-                console.log(codeString);
+                // console.log('getRawCodeCached RESPONSE');
+                // console.log(codeString);
 
                 // console.log('rawCodeString');
                 // console.log('rawCodeString');
@@ -91,10 +91,12 @@ export class HomePage {
                 //TODO: reference this code block
                 //TODO: parse value...
                 //TODO: file type check..
-                // let test = Highlightjs.highlight('html', rawCodeString);
+                // let test;
+                // test = Highlightjs.highlight('javascript', rawCodeString);
+                //
                 // console.log('test');
                 // console.log(test);
-                // file.code = rawCodeString;
+                // file.code = test.value;
                 file.language = 'javascript';
                 file.code = rawCodeString;
                 projectFileObjects.push(file);
@@ -126,6 +128,7 @@ export class HomePage {
 
         // let codeBlocks1 = document.getElementsByClassName("code-block");
         // console.log(codeBlocks1.length);
+
         return projectFileObjects;
         //TODO: apply post semantic hightlighting
         //TODO: for each pre code bloock..
@@ -141,13 +144,13 @@ export class HomePage {
     console.log('post-processing2');
     // console.log(document.getElementsByClassName("code-block"));
     //get the 1 and only code-block, would need to loop also.. verified multiple are picke dup
-    let codeBlocks = document.getElementsByClassName("code-block");
-    console.log(codeBlocks.length);
-    let g: any = window;
-    g.eel = codeBlocks;
+    // let codeBlocks = document.getElementsByClassName("code-block");
+    // console.log(codeBlocks.length);
+    // let g: any = window;
+    // g.eel = codeBlocks;
 
     console.log('highlight..');
-
+    // Highlightjs.initHighlighting();
     // Highlightjs.highlightBlock(document.getElementsByClassName("code-block")[0]);
     // g.eel[0].childNodes.forEach(function(e){return console.log(e);}) this isnt working
 
@@ -177,6 +180,20 @@ export class HomePage {
   // ngDoCheck(){
   //   console.log('ngDoCheck');
   // }
+
+  @ViewChildren('allTheseThings') things: any;
+
+  ngAfterViewInit() {
+    this.things.changes.subscribe(t => {
+      this.ngForRendred();
+    })
+  }
+
+  ngForRendred() {
+    console.log('NgFor is Rendered');
+    Highlightjs.initHighlighting();
+
+  }
 
   changeFontSize() {
     let code;
