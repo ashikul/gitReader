@@ -1,9 +1,13 @@
 import {Injectable} from "@angular/core";
 import {Headers, Http, RequestOptions, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import "rxjs/add/operator/map";
-import "rxjs/add/operator/catch";
-import "rxjs/add/observable/of";
+// import "rxjs/add/operator/map";
+// import "rxjs/add/operator/catch";
+// import "rxjs/add/observable/of";
+// import "rxjs/add/observable/fromPromise";
+// import 'rxjs/add/operator/flatMap';
+import 'rxjs';
+// import "rxjs/add/observable/";
 import {Storage} from "@ionic/storage";
 //TODO: storage service...
 
@@ -49,7 +53,10 @@ export class GithubProvider {
   }
 
   getRawCodeCached(url): Observable<any> {
-    return this.storage.get(url).then((val) => {
+    return Observable
+      .fromPromise(this.storage.get(url))
+      .flatMap((val) => {
+      // return val;
 
       let cached = val;
 
@@ -57,6 +64,7 @@ export class GithubProvider {
         console.log('getting cached data');
         // console.log(cached);
         //NOTE: I REMOVED TO JSON
+        // return Observable.of(cached);
         return Observable.of(cached);
       } else {
         console.log('requesting new data');
@@ -70,21 +78,46 @@ export class GithubProvider {
 
         return this.http.get(url, request)
           .map(resp => {
-            // console.log('resp');
-            // console.log(resp);
-            // console.log('request');
-            // console.log(resp);
             //NOTE: remove text
             let stringResponse = '';
             stringResponse = resp.text();
-            // console.log('stringReponse');
-            // console.log(stringResponse);
-            // sessionStorage.setItem(url, stringResponse);
             this.storage.set(url, stringResponse);
             return stringResponse;
           })
       }
     });
+  }
+
+  getRawCodeCached3(url): Observable<any> {
+    let cached = sessionStorage.getItem(url);
+
+    if (cached) {
+      console.log('getting cached data');
+      // console.log(cached);
+      //NOTE: I REMOVED TO JSON
+      return Observable.of(cached);
+    } else {
+      console.log('requesting new data');
+      let request= new RequestOptions({
+        headers: new Headers({Accept: 'application/vnd.github.v3.raw', Authorization: 'Basic YXNoaWt1bDpTaGlyemFkMDAx'}),
+        url: url
+      });
+
+      return this.http.get(url, request)
+        .map(resp => {
+          // console.log('resp');
+          // console.log(resp);
+          // console.log('request');
+          // console.log(resp);
+          //NOTE: remove text
+          let stringResponse = '';
+          stringResponse = resp.text();
+          // console.log('stringReponse');
+          // console.log(stringResponse);
+          sessionStorage.setItem(url, stringResponse);
+          return stringResponse;
+        });
+    }
   }
 
   getDataCached(url): Observable<any> {

@@ -62,77 +62,80 @@ export class HomePage {
     //we'll save this in the future
     this.projectFiles = this.github.getDataCached(this.projectTreeURL).map(data => {
 
-      // /[a-zA-Z\_][a-zA-Z0-9\_]*/g
+        // /[a-zA-Z\_][a-zA-Z0-9\_]*/g
 
-      //path
-      //type
-      let projectFileObjects = [];
-      //
-      // data.tree[2].map(file => { //why doens this work?
-      data.tree.forEach(file => {
+        //path
+        //type
+        let projectFileObjects = [];
 
-          let rawCodeString;
-          // console.log(file);
+        //
+        // data.tree[2].map(file => { //why doens this work?
+        data.tree.forEach(file => {
+
+            let rawCodeString;
+            // console.log(file);
 
 
-          //TODO: what about no nblobs??
-          // if (file.type === "blob") {
-          if (file.type === "blob" && file.path.includes('xhr-node.js')) { //testing one file
-            this.github.getRawCodeCached(file.url).subscribe(codeString => {
-              rawCodeString = codeString;
+            //TODO: what about no nblobs??
+            // if (file.type === "blob") {
+            if (file.type === "blob" && file.path.includes('xhr-node.js')) { //testing one file
+              this.github.getRawCodeCached(file.url).subscribe(codeString => {
+                rawCodeString = codeString;
+                console.log('getRawCodeCached RESPONSE');
+                console.log(codeString);
 
-              // console.log('rawCodeString');
-              // console.log('rawCodeString');
-              // console.log(rawCodeString);
+                // console.log('rawCodeString');
+                // console.log('rawCodeString');
+                // console.log(rawCodeString);
 
-              //TODO: reference this code block
-              //TODO: parse value...
-              //TODO: file type check..
-              // let test = Highlightjs.highlight('html', rawCodeString);
-              // console.log('test');
-              // console.log(test);
-              // file.code = rawCodeString;
-              file.language = 'javascript';
-              file.code = rawCodeString;
-              projectFileObjects.push(file);
-              // data.code =
-              // console.log('FILE');
-              // console.log(file.path);
-              // console.log(codeString.substring(0, 10));
-              // projectFileObjects.push(file)
-            });
+                //TODO: reference this code block
+                //TODO: parse value...
+                //TODO: file type check..
+                // let test = Highlightjs.highlight('html', rawCodeString);
+                // console.log('test');
+                // console.log(test);
+                // file.code = rawCodeString;
+                file.language = 'javascript';
+                file.code = rawCodeString;
+                projectFileObjects.push(file);
+                // data.code =
+                // console.log('FILE');
+                // console.log(file.path);
+                // console.log(codeString.substring(0, 10));
+                // projectFileObjects.push(file)
+              });
+            }
+
+
+            // console.log(file.path);
+            // console.log(rawCodeString);
+
+            // projectFileObjects.push(file);
+            // console.log(file);
           }
+        );
 
 
-          // console.log(file.path);
-          // console.log(rawCodeString);
+        // console.log('data');
+        // console.log(data);
+        console.log('done');
 
-          // projectFileObjects.push(file);
-          // console.log(file);
-        }
-      );
-
-
-      // console.log('data');
-      // console.log(data);
-      console.log('done');
-
-      console.log('post-processing1');
+        console.log('post-processing1');
+        console.log(projectFileObjects);
 
 
+        // let codeBlocks1 = document.getElementsByClassName("code-block");
+        // console.log(codeBlocks1.length);
+        return projectFileObjects;
+        //TODO: apply post semantic hightlighting
+        //TODO: for each pre code bloock..
 
-      // let codeBlocks1 = document.getElementsByClassName("code-block");
-      // console.log(codeBlocks1.length);
-      return projectFileObjects;
-      //TODO: apply post semantic hightlighting
-      //TODO: for each pre code bloock..
-
-      //need to return finalized array
-      // return projectFileObjects;
-    },
-    {
-      data :console.log('yellah'),
-    }); //woot this works
+        //need to return finalized array
+        // return projectFileObjects;
+      },
+      {
+        data: console.log('yellah'),
+      }); //woot this works
 
 
     console.log('post-processing2');
@@ -140,7 +143,7 @@ export class HomePage {
     //get the 1 and only code-block, would need to loop also.. verified multiple are picke dup
     let codeBlocks = document.getElementsByClassName("code-block");
     console.log(codeBlocks.length);
-    let g:any =  window;
+    let g: any = window;
     g.eel = codeBlocks;
 
     console.log('highlight..');
@@ -179,6 +182,10 @@ export class HomePage {
     let code;
     code = document.querySelector('.code-block');
     code.style.fontSize = this.fontSize + 'px';
+  }
+
+  addhljs() {
+    Highlightjs.initHighlighting();
   }
 
   // application/vnd.github.v3.raw
