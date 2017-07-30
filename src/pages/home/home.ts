@@ -1,4 +1,4 @@
-import {Component, ViewChildren} from "@angular/core";
+import {Component, Input, ViewChildren} from "@angular/core";
 import Highlightjs from "highlightjs";
 import {Http} from "@angular/http";
 import {GithubProvider} from "../../providers/github";
@@ -170,6 +170,13 @@ export class HomePage {
     // console.log(this.projectFiles);
 
   }
+  applyhljs(){
+    // Highlightjs.highlightBlock((document.getElementsByClassName("code-block")[0]));
+    Highlightjs.initHighlighting();
+    // var codeBlocks = document.getElementsByClassName("code-block")[0];
+    // for(let)
+    // document.getElementsByClassName("code-block").forEach
+  }
 
   // ngOnChanges(){
   //   console.log('ngOnChanges');
@@ -190,13 +197,15 @@ export class HomePage {
 
   ngAfterViewInit() {
     this.things.changes.subscribe(t => {
+      // console.log('t');
+      // console.log(t);
       this.ngForRendered();
     })
   }
 
   ngForRendered() {
     console.log('NgFor is Rendered');
-    Highlightjs.initHighlighting();
+    // Highlightjs.initHighlighting();
 
 
     //TODO: feature semantic highlighting...
@@ -205,6 +214,14 @@ export class HomePage {
 
     // console.log(g.eel[0].childNodes);
   }
+  //
+  // executeSomethingAtTheEnd(lastItem: boolean) {
+  //   if (lastItem) {
+  //     console.log('ngFor just processed the last element');
+  //   }
+  // }
+
+
 
   changeFontSize() {
     let code;

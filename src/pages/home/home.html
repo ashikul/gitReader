@@ -13,6 +13,7 @@
     <h3> Test App 0.0.1</h3>
     <input type="number" [(ngModel)]="fontSize">
     <button (click)="changeFontSize()">Change Font size</button>
+    <button (click)="applyhljs()">HLJS</button>
   </div>
   <!--<p>-->
   <!--If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.-->
@@ -21,7 +22,8 @@
   <!--<button ion-button secondary menuToggle>Toggle Menu</button>-->
   {{name}}
   <!--<ul *ngIf="projectFiles && projectFiles.length > 0">-->
-  <li #allTheseThings *ngFor="let file of projectFiles | async ">
+  <li  #allTheseThings *ngFor="let file of projectFiles | async">
+
     {{file.path}}
     <!--<div>-->
     <!--{{file.code}}-->
@@ -30,7 +32,7 @@
 
   <div>
     <!--<div [innerHTML]="file.code"></div>-->
-    <pre><code class="code-block {{file.language}}">{{file.code}}</code></pre>
+    <pre><code #allTheseThings class="code-block {{file.language}}">{{file.code}}</code></pre>
     <!--<pre><code class="sample-code" id="blah" [innerHTML]="file.code"></code></pre>-->
   </div>
   </li>
